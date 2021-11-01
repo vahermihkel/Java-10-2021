@@ -2,13 +2,13 @@ package ee.mihkel.item;
 
 import ee.mihkel.World;
 
-public class Item {
+public abstract class Item {
     private int xCoord;
     private int yCoord;
-    private char symbol;
-    private double strength;
+    private final char symbol;
+    private final double strength;
     private int durability;
-    private String name;
+    private final String name;
 
     // parem klõps -> generate -> constructor -> võtan kõik
     public Item(double strength, int durability, String name, World world) {
@@ -46,6 +46,20 @@ public class Item {
 
     public String getName() {
         return name;
+    }
+
+    public void increaseDurability() {
+        this.durability++;
+    }
+
+    public void decreaseDurability() {
+        this.durability--;
+    }
+
+    public abstract void reboost();
+
+    protected void setDurability(int durability) {
+        this.durability = durability;
     }
 
     @Override

@@ -11,28 +11,29 @@ public abstract class Character {
     protected int yCoord;
     private char symbol;
     private boolean isVisible;
+    private double health;
 
     public Character(char symbol, World world) {
         this.symbol = symbol;
         this.isVisible = true;
-        randomiseCoordinates(world);
+        this.health = 10;
     }
 
-    public void randomiseCoordinates(World world) {
-        xCoord = (int)(Math.random()*(world.getWidth() - 2)) + 1;
-        yCoord = (int)(Math.random()*(world.getHeight() - 2)) + 1;
-        checkCoordinaatesUniqueness(world);
+    public void randomiseCoordinates(int worldWidth, int worldHeight, List<Character> characters) {
+        xCoord = (int)(Math.random()*(worldWidth - 2)) + 1;
+        yCoord = (int)(Math.random()*(worldHeight - 2)) + 1;
+        checkCoordinaatesUniqueness(worldWidth, worldHeight, characters);
     }
 
-    private void checkCoordinaatesUniqueness(World world) {
+    private void checkCoordinaatesUniqueness(int worldWidth, int worldHeight, List<Character> characters) {
         // stream
-        List<Character> charactersWithoutThis = world.getCharacters().stream()
+        List<Character> charactersWithoutThis = characters.stream()
                 .filter(e -> e.symbol != this.symbol)
                 .collect(Collectors.toList());
 
         for (Character c: charactersWithoutThis) {
             if (c.xCoord == this.xCoord && c.yCoord == this.yCoord) {
-                randomiseCoordinates(world);
+                randomiseCoordinates(worldWidth, worldHeight, characters);
             }
         }
     }
@@ -55,5 +56,17 @@ public abstract class Character {
 
     public void setVisibility(boolean visible) {
         isVisible = visible;
+    }
+
+    public void takeHealth() {
+        this.health--;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void reboost() {
+        this.health = 10;
     }
 }

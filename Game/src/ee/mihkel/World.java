@@ -35,12 +35,15 @@ public class World {
         return characters;
     }
 
-    public void addCharacter(Character player) {
-        this.characters.add(player);
+    public void setCharacters(List<Character> characters) {
+        this.characters = characters;
+        for (Character c :characters) {
+            c.randomiseCoordinates(width, height, characters);
+        }
     }
 
-    public void addItem(Item item) {
-        this.items.add(item);
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
 

@@ -1,14 +1,14 @@
 package ee.mihkel;
 
-import ee.mihkel.character.Character;
 import ee.mihkel.character.Enemy;
 import ee.mihkel.character.Player;
 import ee.mihkel.character.QuestMaster;
+import ee.mihkel.exception.GameOverException;
 import ee.mihkel.item.Dagger;
 import ee.mihkel.item.Hammer;
-import ee.mihkel.item.Item;
 import ee.mihkel.item.Sword;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Game {
@@ -33,31 +33,35 @@ public class Game {
         // thread - taimer
         // geneerika - väljaspool loogikat näidata
 
-	    World world = new World(3,5);
+	    World world = new World(4,7);
 
 	    Player player = new Player(world);
-	    world.addCharacter(player);
         Enemy enemy = new Enemy(world);
-        world.addCharacter(enemy);
         QuestMaster questMaster = new QuestMaster(world);
-        world.addCharacter(questMaster);
+        world.setCharacters(Arrays.asList(player, enemy, questMaster));
 
         Dagger dagger = new Dagger(world);
-        world.addItem(dagger);
         Hammer hammer = new Hammer(world);
-        world.addItem(hammer);
         Sword sword = new Sword(world);
-        world.addItem(sword);
+        world.setItems(Arrays.asList(dagger, hammer, sword));
 
         world.printMap();
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
-        while (!input.equals("end")) {
-            player.move(input, world);
-            GameUtil.checkIfPlayerCanInteract(world, player, enemy, questMaster, dagger, hammer, sword);
-            world.printMap();
-            input = scanner.nextLine();
+        try {
+            while (!input.equals("end")) {
+                player.move(input, world);
+                GameUtil.checkIfPlayerCanInteract(world, player, enemy, questMaster, dagger, hammer, sword, scanner);
+                world.printMap();
+                input = scanner.nextLine();
+            }
+        } catch (GameOverException e) {
+            System.out.println("Mäng läbi!");
+            System.out.println("Tapetud vaenlased: "); // võti-väärtus paaridega list
+            // 2.
+            System.out.println("Mänguks kogutud aeg: "); // thread ehk taimer
+            System.out.println("Kogutud punktid: "); // static
         }
     }
 }
