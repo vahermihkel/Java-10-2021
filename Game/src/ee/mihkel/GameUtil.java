@@ -11,11 +11,28 @@ import ee.mihkel.item.Item;
 import ee.mihkel.item.Sword;
 
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameUtil {
+    private static int seconds = 0;
+
+    protected static void startTimer(Timer timer) {
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                seconds++;
+            }
+        },1000,100);
+    }
+
+    public static int getSeconds() {
+        return seconds;
+    }
+
     protected static void checkIfPlayerCanInteract(World world, Player player,
-                 Enemy enemy, QuestMaster questMaster, Dagger dagger,
-                 Hammer hammer, Sword sword, Scanner scanner) throws GameOverException {
+                                                   Enemy enemy, QuestMaster questMaster, Dagger dagger,
+                                                   Hammer hammer, Sword sword, Scanner scanner) throws GameOverException {
         checkIfPlayerAndEnemyMet(player, enemy, scanner);
         checkIfPlayerAndQuestMasterMet(world, player, enemy, questMaster);
         checkIfCanAddItemToInventory(player, dagger);
@@ -36,7 +53,7 @@ public class GameUtil {
     }
 
     private static void chooseItem(Player player, Enemy enemy, Scanner scanner) throws GameOverException {
-        System.out.println("Kohtusid vaenlasega! Vali millist relva võitlemiseks soovid:");
+        System.out.println("Kohtusid vaenlasega: " + enemy.getEnemyType() + "! Vali millist relva võitlemiseks soovid:");
         player.showInventory();
         String input;
         Item item = null;
@@ -44,7 +61,7 @@ public class GameUtil {
             input = scanner.nextLine();
             try {
                 item = player.useItem(Integer.parseInt(input));
-                fightWithEnemy(player, enemy, scanner);
+                fightWithEnemy(player, enemy, scanner, item);
             } catch (NumberFormatException e) {
                 System.out.println("Sisestasid numbri asemel muu sümboli!");
             } catch (IndexOutOfBoundsException e) {
@@ -54,7 +71,7 @@ public class GameUtil {
         enemy.setVisibility(false);
     }
 
-    private static void fightWithEnemy(Player player, Enemy enemy, Scanner scanner) throws GameOverException {
+    private static void fightWithEnemy(Player player, Enemy enemy, Scanner scanner, Item item) throws GameOverException {
         while (enemy.getHealth() > 0) {
             System.out.println("Vaenlasega võitlemiseks ütle üks number 1-3");
             int randomNumber = (int) (Math.random()*3)+1;
@@ -69,13 +86,16 @@ public class GameUtil {
                         throw new InputNumberNotValidException();
                     }
                     if (randomNumber == userNumber) {
-                        enemy.takeHealth();
-                        if (enemy.getHealth() == 0) {
+                        enemy.takeHealth(item.getStrength());
+                        Item.setPoints(item.getStrength());
+                        System.out.println("Võtsid vaenlaselt elu, tema elusid alles: " + enemy.getHealth());
+                        if (enemy.getHealth() <= 0) {
                             player.addToKilledEnemies(enemy.getEnemyType());
                         }
                     } else {
                         player.takeHealth();
-                        if (player.getHealth() == 0) {
+                        System.out.println("Kaotasid elu, sinu elusid alles: " + player.getHealth());
+                        if (player.getHealth() <= 0) {
                             throw new GameOverException();
                         }
                     }
@@ -92,7 +112,7 @@ public class GameUtil {
                                                        Enemy enemy, QuestMaster questMaster) {
         if (player.getxCoord() == questMaster.getxCoord() && player.getyCoord() == questMaster.getyCoord()) {
             questMaster.setVisibility(false);
-            enemy.setVisibility(true);
+            enemy.randomiseEnemyType();
             enemy.randomiseCoordinates(world.getWidth(), world.getHeight(), world.getCharacters());
         } else if (!questMaster.isVisible()) {
             questMaster.setVisibility(true);
@@ -103,5 +123,12 @@ public class GameUtil {
         if (player.getxCoord() == dagger.getxCoord() && player.getyCoord() == dagger.getyCoord()) {
             player.addToInventory(dagger);
         }
+    }
+
+    protected static void showGameOverMessages(Player player) {
+        System.out.println("Mäng läbi!");
+        player.showKilledEnemies();
+        System.out.println("Mänguks kulunud aeg: " + GameUtil.getSeconds()); // thread ehk taimer
+        System.out.println("Kogutud punktid: " + Item.getPoints()); // static
     }
 }

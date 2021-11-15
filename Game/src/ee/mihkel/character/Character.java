@@ -9,14 +9,14 @@ import java.util.stream.Collectors;
 public abstract class Character {
     protected int xCoord;
     protected int yCoord;
-    private char symbol;
+    private final char symbol;
     private boolean isVisible;
     private double health;
 
-    public Character(char symbol, World world) {
+    public Character(char symbol) {
         this.symbol = symbol;
         this.isVisible = true;
-        this.health = 10;
+        this.health = 3;
     }
 
     public void randomiseCoordinates(int worldWidth, int worldHeight, List<Character> characters) {
@@ -58,8 +58,13 @@ public abstract class Character {
         isVisible = visible;
     }
 
+    // function overloading
     public void takeHealth() {
         this.health--;
+    }
+
+    public void takeHealth(double itemStrength) {
+        this.health -= itemStrength;
     }
 
     public double getHealth() {
@@ -67,6 +72,6 @@ public abstract class Character {
     }
 
     public void reboost() {
-        this.health = 10;
+        this.health = 3;
     }
 }

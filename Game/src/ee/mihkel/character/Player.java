@@ -9,21 +9,30 @@ import java.util.List;
 import java.util.Map;
 
 public class Player extends Character {
-    private Map<EnemyType, Integer> killedEnemies = new HashMap<>();
-    private List<Item> inventory = new ArrayList<>();
+    private final Map<EnemyType, Integer> killedEnemies = new HashMap<>();
+    private final List<Item> inventory = new ArrayList<>();
     private Direction direction = Direction.UP;
 
-    public Player(World world) {
-        super('X', world);
+    public Player() {
+        super('X');
     }
 
     public void addToKilledEnemies(EnemyType enemyType) {
-        this.killedEnemies.put(enemyType,this.killedEnemies.get(enemyType)+1);
+        if (!this.killedEnemies.containsKey(enemyType)) {
+            this.killedEnemies.put(enemyType,1);
+        } else {
+            this.killedEnemies.put(enemyType,this.killedEnemies.get(enemyType)+1);
+        }
     }
 
-    // 1. väljakuvamine --- void showKilledEnemies
-    // sout Ant: 3
-    // Dragon: 5
+    public void showKilledEnemies() {
+        if (this.killedEnemies.size() > 0) {
+            System.out.println("Tapetud vaenlased: "); // võti-väärtus paaridega list
+            this.killedEnemies.forEach((key,value)-> System.out.println(key + ": " + value));
+        } else {
+            System.out.println("Tapetud vaenlasi pole!");
+        }
+    }
 
     public boolean inventoryEmpty() {
         return this.inventory.isEmpty();

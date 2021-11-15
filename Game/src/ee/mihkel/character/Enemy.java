@@ -6,11 +6,15 @@ import ee.mihkel.World;
 public class Enemy extends Character {
     private EnemyType enemyType;
 
-    public Enemy(World world) {
-        super('Z', world); // parenti constructor
-        // this.enemyType = EnemyType.getRandomEnemyType();
-        // 4. Ei ole enam muutuja väärtuse andmine vaid kutsu selle
-        // random funktsiooni välja
+    public Enemy() {
+        super('Z'); // parenti constructor
+        this.randomiseEnemyType();
+    }
+
+    public void randomiseEnemyType() {
+        this.enemyType = EnemyType.getRandomEnemyType();
+        reboost();
+        setVisibility(true);
     }
 
     public EnemyType getEnemyType() {

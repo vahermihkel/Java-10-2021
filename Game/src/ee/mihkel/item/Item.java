@@ -9,8 +9,8 @@ public abstract class Item {
     private final double strength;
     private int durability;
     private final String name;
+    private static double points;
 
-    // parem klõps -> generate -> constructor -> võtan kõik
     public Item(double strength, int durability, String name, World world) {
         this.symbol = 'I';
         this.strength = strength;
@@ -22,6 +22,14 @@ public abstract class Item {
     public void randomiseCoordinates(World world) {
         xCoord = (int)(Math.random()*(world.getWidth() - 2)) + 1;
         yCoord = (int)(Math.random()*(world.getHeight() - 2)) + 1;
+    }
+
+    public static double getPoints() {
+        return points;
+    }
+
+    public static void setPoints(double points) {
+        Item.points = points;
     }
 
     public int getxCoord() {

@@ -9,10 +9,10 @@ import java.util.List;
 
 public class World {
     // encapsulation
-    private int height;
-    private int width;
-    private List<Character> characters = new ArrayList<>();
-    private List<Item> items = new ArrayList<>();
+    private final int height;
+    private final int width;
+    private List<Character> characters;
+    private List<Item> items;
 
 
     // constructor overloading
