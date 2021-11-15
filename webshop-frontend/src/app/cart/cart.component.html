@@ -12,6 +12,8 @@
   <br>  <br>
 </div>
 
+<div *ngIf="cartItems.length == 0">Ostukorv on tühi</div>
+
 <br><br>
 
 <div *ngIf="cartItems.length > 0">Ostukorvi kogusumma: {{ sumOfCart }}</div>

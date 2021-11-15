@@ -7,6 +7,7 @@
   <div>Pilt</div>
                 <!-- funktsioon peab olema .ts failis olemas -->
   <button (click)="onDeleteItem(item)">Kustuta</button>
-  <button routerLink="/admin/muuda-ese">Muuda</button>
+  <button [routerLink]="['/admin/muuda-ese/',item.title]">Muuda</button>
+  <!-- <button routerLink="/admin/muuda-ese/{{item.title}}">Muuda</button> -->
   <br>  <br>
 </div>

@@ -1,1 +1,22 @@
-<p>edit-item works!</p>
+<!-- 
+  app.module.ts failist:
+
+  HTML failis kasutamiseks
+  imports:
+    BrowserModule, <--- *ngFor, *ngIf
+    AppRoutingModule, <--- routerLink
+    FormsModule, <--- ngForm (saab väärtuse mida anda edasi), ngModel
+    ReactiveFormsModule
+
+  <form (ngSubmit)="onSubmit(form)" #form="ngForm">
+</form> -->
+
+<form (ngSubmit)="onSubmit()" [formGroup]="editItemForm">
+  <label for="">Pealkiri</label> <br>
+  <input formControlName="title" type="text" required> <br>
+  <label for="">Hind</label> <br>
+  <input formControlName="price" type="text" required> <br>
+  <label for="">Kategooria</label> <br>
+  <input formControlName="category" type="text" required> <br>
+  <button [disabled]="editItemForm.invalid">Muuda</button>
+</form>

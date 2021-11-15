@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getCartItems();
-    this.cartItems.forEach(cartItem => this.sumOfCart += cartItem.price);
+    this.sumOfCart = this.cartService.calculateSumOfCart();
   }
 
   onDeleteFromCart(item: Item) {
@@ -27,8 +27,7 @@ export class CartComponent implements OnInit {
   //   this.cartItems = this.cartService.cartItemsInService;
     this.cartService.deleteFromCart(item);
     this.cartItems = this.cartService.getCartItems();
-    this.sumOfCart = 0;
-    this.cartItems.forEach(cartItem => this.sumOfCart += cartItem.price);
+    this.sumOfCart = this.cartService.calculateSumOfCart();
   }
 
   onEmptyCart() {

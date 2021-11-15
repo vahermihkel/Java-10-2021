@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddItemComponent } from './admin/add-item/add-item.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { CategoryComponent } from './admin/category/category.component';
 import { EditItemComponent } from './admin/edit-item/edit-item.component';
 import { ViewItemsComponent } from './admin/view-items/view-items.component';
 import { CartComponent } from './cart/cart.component';
@@ -15,8 +16,9 @@ const routes: Routes = [
   { path: "ostukorv", component: CartComponent },
   { path: "ese/:itemId", component: SingleItemComponent },
   { path: "admin", component: AdminHomeComponent },
+  { path: "admin/kategooria", component: CategoryComponent },
   { path: "admin/lisa-ese", component: AddItemComponent },
-  { path: "admin/muuda-ese", component: EditItemComponent },
+  { path: "admin/muuda-ese/:itemId", component: EditItemComponent },
   { path: "admin/esemed", component: ViewItemsComponent },
 ];
 
