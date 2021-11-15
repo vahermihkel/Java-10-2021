@@ -1,0 +1,18 @@
+<button *ngIf="cartItems.length > 0" (click)="onEmptyCart()">Tühjenda ostukorv</button>
+
+<br><br>
+
+<div *ngFor="let item of cartItems">
+  <div>{{ item.title }}</div>
+  <div>{{ item.price }} €</div>
+  <div>Kategooria</div>
+  <div>Pilt</div>
+                <!-- funktsioon peab olema .ts failis olemas -->
+  <button (click)="onDeleteFromCart(item)">X</button>
+  <br>  <br>
+</div>
+
+<br><br>
+
+<div *ngIf="cartItems.length > 0">Ostukorvi kogusumma: {{ sumOfCart }}</div>
+

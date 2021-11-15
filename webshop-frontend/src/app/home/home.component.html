@@ -1,0 +1,14 @@
+<!-- for (Item item: world.itemList()) -->
+
+              <!-- items muutuja peab olema .ts failis olemas -->
+<div *ngFor="let item of items">
+  <div routerLink="ese/{{item.title}}">
+    <div>{{ item.title }}</div>
+    <div>{{ item.price }} €</div>
+    <div>Kategooria</div>
+    <div>Pilt</div>
+  </div>
+                <!-- funktsioon peab olema .ts failis olemas -->
+  <button (click)="onAddToCart(item)">Lisa ostukorvi</button>
+  <br>  <br>
+</div>

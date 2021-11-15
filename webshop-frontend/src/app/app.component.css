@@ -1,0 +1,15 @@
+.navbar {
+  background-color: blanchedalmond;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.cart-button {
+  height: 70px;
+  margin: 20px;
+  cursor: pointer;
+}

@@ -1,0 +1,19 @@
+<form (ngSubmit)="onSubmit(addItemForm)" #addItemForm="ngForm">
+  <!-- <button type="button">Info</button> <br> -->
+  <label>Pealkiri</label><br>
+  <input ngModel name="pealkiri" type="text" required> <br>
+  <label>Hind</label><br>
+  <!-- <button type="button">Ava erinevate kursside tabel</button><br> -->
+  <input ngModel name="hind" type="number" required> <br>
+  <label>Kategooria</label><br>
+  <input ngModel name="kategooria" type="text" required> <br>
+  <button [disabled]="addItemForm.invalid" type="submit">Lisa ese</button>
+</form>
+
+
+<!-- 
+  {{ muutuja }} - string interpolation
+  [html_atribuut] - property binding
+  (click) - event binding
+  constructor(Service) {} - dependency injection
+ -->

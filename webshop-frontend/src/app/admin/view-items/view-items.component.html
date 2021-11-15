@@ -1,0 +1,12 @@
+<div *ngIf="items.length === 0">Esemeid ei ole!</div>
+
+<div *ngFor="let item of items">
+  <div>{{ item.title }}</div>
+  <div>{{ item.price }} €</div>
+  <div>{{ item.category }}</div>
+  <div>Pilt</div>
+                <!-- funktsioon peab olema .ts failis olemas -->
+  <button (click)="onDeleteItem(item)">Kustuta</button>
+  <button routerLink="/admin/muuda-ese">Muuda</button>
+  <br>  <br>
+</div>
