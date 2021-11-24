@@ -38,7 +38,9 @@ export class HomeComponent implements OnInit {
 // }
 
   ngOnInit(): void {
-    this.items = this.itemService.itemsInService;
+    this.itemService.getItemsFromDb().subscribe(items => {
+      this.items = items;
+    });
     console.log("tulin home componenti");
   }
 

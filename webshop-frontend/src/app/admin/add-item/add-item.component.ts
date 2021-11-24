@@ -14,6 +14,7 @@ export class AddItemComponent implements OnInit {
   // 2. kahes või enamas funktsioonis
   // (muidu teen let muutujaks)
   categories!: string[];
+  message = "";
 
   constructor(private itemService: ItemService,
     private categoryService: CategoryService) { }
@@ -25,8 +26,30 @@ export class AddItemComponent implements OnInit {
   onSubmit(form: NgForm) {
     if (form.valid) {
       console.log(form);
-      let item = new Item(form.value.pealkiri, form.value.hind, form.value.kategooria);
-      this.itemService.itemsInService.push(item);
-    }
+      let item = new Item(
+        form.value.pealkiri, 
+        form.value.hind, 
+        form.value.kategooria
+        );
+      // this.itemService.itemsInService.push(item);
+      this.itemService.addItemToDb(item).subscribe(
+        response => {
+          this.message = response.responseMessage;
+          this.restartForm(form);
+        },
+        errorRes => {
+          console.log(errorRes);
+          this.message = errorRes.error.message;
+          this.restartForm(form);
+        }
+      )}
+  }
+
+  restartForm(form: NgForm) {
+    console.log("tere");
+    setTimeout(()=>{
+      this.message = ""
+    },3000);
+    form.reset();
   }
 }

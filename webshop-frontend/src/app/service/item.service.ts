@@ -6,11 +6,11 @@ import { Item } from '../model/item.model';
   providedIn: 'root'
 })
 export class ItemService {
-  itemsInService: Item[] = [
-    {title: 'Ese1', price: 100, category: "kat1"},
-    {title: 'Ese2',price: 200, category: "kat2"},
-    {title: 'Ese3',price: 350, category: "kat1"}
-    ];
+  // itemsInService: Item[] = [
+  //   {title: 'Ese1', price: 100, category: "kat1"},
+  //   {title: 'Ese2',price: 200, category: "kat2"},
+  //   {title: 'Ese3',price: 350, category: "kat1"}
+  //   ];
 
   private backendUrl = "http://localhost:8080/items"
 
@@ -21,28 +21,40 @@ export class ItemService {
   }
 
   addItemToDb(item: Item) {
-    return this.http.post(this.backendUrl, item);
+    return this.http.post<{responseMessage: string}>(this.backendUrl, item);
   }
 
-  getItems() {
-    return this.itemsInService.slice();
+  deleteItemFromDb(itemId: number) {
+    return this.http.delete<{responseMessage: string}>(this.backendUrl + "/" + itemId);
   }
 
-  deleteItem(item: Item) {
-    let index = this.itemsInService.indexOf(item);
-    this.itemsInService.splice(index,1);
+  getOneFromDb(itemId: number) {
+    return this.http.get<Item>(this.backendUrl + "/" + itemId);
   }
 
-  addItem(item: Item) {
-    this.itemsInService.push(item);
+  editItemFromDb(item: Item) {
+    return this.http.put<{responseMessage: string}>(this.backendUrl, item);
   }
 
-  getOneItem(itemId: string) {
-    return this.itemsInService.find(item => item.title == itemId);
-  }
+  // getItems() {
+  //   return this.itemsInService.slice();
+  // }
 
-  editItem(item: Item, itemId: string) {
-    let index = this.itemsInService.findIndex(itemInService => itemInService.title == itemId);
-    this.itemsInService[index] = item;
-  }
+  // deleteItem(item: Item) {
+  //   let index = this.itemsInService.indexOf(item);
+  //   this.itemsInService.splice(index,1);
+  // }
+
+  // addItem(item: Item) {
+  //   this.itemsInService.push(item);
+  // }
+
+  // getOneItem(itemId: string) {
+  //   return this.itemsInService.find(item => item.title == itemId);
+  // }
+
+  // editItem(item: Item, itemId: string) {
+  //   let index = this.itemsInService.findIndex(itemInService => itemInService.title == itemId);
+  //   this.itemsInService[index] = item;
+  // }
 }

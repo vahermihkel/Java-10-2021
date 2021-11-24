@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Item } from 'src/app/model/item.model';
 import { ItemService } from 'src/app/service/item.service';
@@ -12,25 +12,26 @@ import { ItemService } from 'src/app/service/item.service';
 export class EditItemComponent implements OnInit {
   editItemForm!: FormGroup;
   originalItem!: Item;
+  message = "";
 
   constructor(private route: ActivatedRoute,
     private itemService: ItemService,
     private router: Router) { }
 
   ngOnInit(): void {
-    let id = this.route.snapshot.paramMap.get("itemId");
+    let id = Number(this.route.snapshot.paramMap.get("itemId"));
     console.log(id);
     if (id) {
-      let item = this.itemService.getOneItem(id);
-      console.log(item);
-      if (item) {
-        this.originalItem = item;
-        this.editItemForm = new FormGroup({
-          title: new FormControl(item.title),
-          price: new FormControl(item.price),
-          category: new FormControl(item.category),
-        });
-      }
+      this.itemService.getOneFromDb(id).subscribe(item => {
+        if (item) {
+          this.originalItem = item;
+          this.editItemForm = new FormGroup({
+            title: new FormControl(item.title),
+            price: new FormControl(item.price),
+            category: new FormControl(item.category),
+          });
+        }
+      });  
     }
   }
 
@@ -41,9 +42,25 @@ export class EditItemComponent implements OnInit {
         formValue.title, 
         formValue.price, 
         formValue.category);
-      this.itemService.editItem(item, this.originalItem.title);
-      this.router.navigateByUrl("/admin/esemed");
+      // this.itemService.editItem(item, this.originalItem.title);
+      this.itemService.editItemFromDb(item).subscribe(
+        res => {
+          this.message = res.responseMessage;
+          this.restartForm();
+          this.router.navigateByUrl("/admin/esemed");
+        },
+        err => {
+          this.message = err.error.message;
+          this.restartForm();
+        })
     }
+  }
+
+  restartForm() {
+    this.editItemForm.reset();
+    setInterval(()=>{
+      this.message = "";
+    },3000)
   }
 
 }

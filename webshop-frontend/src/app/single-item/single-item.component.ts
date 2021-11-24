@@ -18,17 +18,15 @@ export class SingleItemComponent implements OnInit {
     console.log(this.route);
     console.log(this.route.snapshot);
     console.log(this.route.snapshot.paramMap);
-    let id = this.route.snapshot.paramMap.get("itemId");
+    let id = Number(this.route.snapshot.paramMap.get("itemId"));
     console.log(id);
     // let id2 = this.route.paramMap.subscribe(paramMap => {
     //   console.log(paramMap.get("itemId"));
     // })
     if (id) { // if (id != null)
-      let itemFound = this.itemService.getOneItem(id);
-      if (itemFound) {
-        this.item = itemFound;
-        console.log(this.item);
-      }
+      this.itemService.getOneFromDb(id).subscribe(item => {
+        this.item = item;
+      });        
     }
   }
 
