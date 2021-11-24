@@ -13,17 +13,19 @@ export class EditItemComponent implements OnInit {
   editItemForm!: FormGroup;
   originalItem!: Item;
   message = "";
+  id!: number;
 
   constructor(private route: ActivatedRoute,
     private itemService: ItemService,
     private router: Router) { }
 
   ngOnInit(): void {
-    let id = Number(this.route.snapshot.paramMap.get("itemId"));
-    console.log(id);
-    if (id) {
-      this.itemService.getOneFromDb(id).subscribe(item => {
+    this.id = Number(this.route.snapshot.paramMap.get("itemId"));
+    console.log(this.id);
+    if (this.id) {
+      this.itemService.getOneFromDb(this.id).subscribe(item => {
         if (item) {
+          console.log(item);
           this.originalItem = item;
           this.editItemForm = new FormGroup({
             title: new FormControl(item.title),
@@ -41,7 +43,8 @@ export class EditItemComponent implements OnInit {
       let item = new Item(
         formValue.title, 
         formValue.price, 
-        formValue.category);
+        formValue.category,
+        this.id);
       // this.itemService.editItem(item, this.originalItem.title);
       this.itemService.editItemFromDb(item).subscribe(
         res => {

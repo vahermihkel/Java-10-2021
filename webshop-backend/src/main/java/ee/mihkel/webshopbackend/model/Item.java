@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -20,5 +18,7 @@ public class Item {
     private Long id;
     private String title;
     private double price;
-    private String category;
+
+    @OneToOne
+    private Category category;
 }
