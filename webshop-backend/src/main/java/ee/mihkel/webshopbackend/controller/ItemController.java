@@ -1,6 +1,6 @@
 package ee.mihkel.webshopbackend.controller;
 
-import ee.mihkel.webshopbackend.model.ItemResponse;
+import ee.mihkel.webshopbackend.model.output.ItemResponse;
 import ee.mihkel.webshopbackend.model.Item;
 import ee.mihkel.webshopbackend.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 
 //@Controller

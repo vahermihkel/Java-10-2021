@@ -5,6 +5,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import ee.mihkel.webshopbackend.model.Item;
 import ee.mihkel.webshopbackend.repository.ItemRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Log4j2
 public class ItemCache {
 
     @Autowired
@@ -31,9 +33,8 @@ public class ItemCache {
             });
 
     private void updateCacheIfEmpty() {
-        System.out.println("UPDATE ÜRITUS");
-        System.out.println(itemCache.asMap().values().size());
-        System.out.println();
+        log.info("UPDATE ÜRITUS");
+        log.error(itemCache.asMap().values().size());
         if (itemCache.asMap().values().size() == 0) {
             System.out.println("TÜHJUS");
             itemRepository.findAll().forEach(item -> itemCache.put(item.getId(), item));

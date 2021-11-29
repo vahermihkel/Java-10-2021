@@ -1,5 +1,6 @@
 package ee.mihkel.webshopbackend.service;
 
+import ee.mihkel.webshopbackend.cache.ItemCache;
 import ee.mihkel.webshopbackend.model.Item;
 import ee.mihkel.webshopbackend.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ import java.util.Optional;
 @Service
 public class ItemService {
 
-//    @Autowired
-//    private ItemCache itemCache;
+    @Autowired
+    private ItemCache itemCache;
 
     @Autowired
     ItemRepository itemRepository;
@@ -23,7 +24,7 @@ public class ItemService {
     }
 
     public Item addItem(Item item) {
-//        itemCache.updateCache(item);
+        itemCache.updateCache(item);
         return itemRepository.save(item);
     }
 
