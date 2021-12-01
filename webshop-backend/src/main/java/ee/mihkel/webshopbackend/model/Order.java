@@ -4,18 +4,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Entity
+@Table(name="orders")
 public class Order {
-    // OneToOne
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
     private Person person;
 
-    // ManyToOne
-    @ManyToOne
+    private double amount;
+
+    @OneToMany
     private List<Item> orderItems;
 }
