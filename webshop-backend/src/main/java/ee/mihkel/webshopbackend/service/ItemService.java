@@ -13,8 +13,8 @@ import java.util.Optional;
 @Service
 public class ItemService {
 
-    @Autowired
-    private ItemCache itemCache;
+//    @Autowired
+//    private ItemCache itemCache;
 
     @Autowired
     ItemRepository itemRepository;
@@ -24,7 +24,7 @@ public class ItemService {
     }
 
     public Item addItem(Item item) {
-        itemCache.updateCache(item);
+//        itemCache.updateCache(item);
         return itemRepository.save(item);
     }
 

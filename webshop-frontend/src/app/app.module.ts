@@ -14,6 +14,8 @@ import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { SingleItemComponent } from './single-item/single-item.component';
 import { NavbarComponent } from './global/navbar/navbar.component';
 import { CategoryComponent } from './admin/category/category.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { CategoryComponent } from './admin/category/category.component';
     AdminHomeComponent,
     SingleItemComponent,
     NavbarComponent,
-    CategoryComponent
+    CategoryComponent,
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
