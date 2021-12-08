@@ -5,6 +5,8 @@ import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { CategoryComponent } from './admin/category/category.component';
 import { EditItemComponent } from './admin/edit-item/edit-item.component';
 import { ViewItemsComponent } from './admin/view-items/view-items.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 import { CartComponent } from './cart/cart.component';
 import { HomeComponent } from './home/home.component';
 import { SingleItemComponent } from './single-item/single-item.component';
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: "admin/lisa-ese", component: AddItemComponent },
   { path: "admin/muuda-ese/:itemId", component: EditItemComponent },
   { path: "admin/esemed", component: ViewItemsComponent },
+  { path: "logi-sisse", component: LoginComponent },
+  { path: "registreeru", component: SignupComponent },
 ];
 
 @NgModule({

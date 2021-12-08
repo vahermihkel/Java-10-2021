@@ -1,1 +1,29 @@
-<p>signup works!</p>
+<div>{{ message }}</div>
+<br>
+
+<form (ngSubmit)="onSubmit(form)" #form="ngForm" autocomplete="nofill">
+  <label for="">Isikukood*</label> <br>
+  <input ngModel name="personCode" type="text" required autocomplete="nofill"> <br>
+  <label for="">Eesnimi*</label> <br>
+  <input ngModel name="firstName" type="text" required autocomplete="nofill"> <br>
+  <label for="">Perekonnanimi*</label> <br>
+  <input ngModel name="lastName" type="text" required autocomplete="nofill"> <br>
+  <label for="">E-mail*</label> <br>
+  <input ngModel name="email" type="text" required autocomplete="nofill"> <br>
+  <label for="">Telefon</label> <br>
+  <input ngModel name="phone" type="text" autocomplete="nofill"> <br>
+  <label for="">Parool*</label> <br>
+  <input ngModel name="password" type="password" required autocomplete="new-password"> <br>
+  <label for="">Korda parool*</label> <br>
+  <input ngModel name="passwordRepeat" type="password" required autocomplete="new-password"> <br>
+  <button [disabled]="form.invalid">Registreeru</button>
+</form>
+
+
+
+<!--   personCode: formValue.personCode,
+      firstName: formValue.firstName,
+      lastName: formValue.lastName,
+      email: formValue.email,
+      phone: formValue.,
+      password: formValue.password -->

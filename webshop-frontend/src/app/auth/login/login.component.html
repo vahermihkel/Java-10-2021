@@ -1,1 +1,9 @@
-<p>login works!</p>
+<div>{{ message }}</div>
+<br>
+
+<form (ngSubmit)="onSubmit(form)" #form="ngForm" autocomplete="nofill">
+  <input ngModel name="email" type="text" required autocomplete="nofill"> <br>
+  <label for="">Telefon</label> <br>
+  <input ngModel name="password" type="password" required autocomplete="new-password"> <br>
+  <label for="">Korda parool*</label> <br>
+</form>

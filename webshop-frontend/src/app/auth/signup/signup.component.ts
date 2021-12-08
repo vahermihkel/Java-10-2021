@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SignupData } from 'src/app/model/signup.interface';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from '../auth.service';
 
@@ -9,30 +11,49 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
+  message = "";
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
 
   onSubmit(form: NgForm) {
-    this.authService.signup(form.value).subscribe(authData => {
-      if (authData.token && authData.expirationDate) {
-        new User(
-          authData.personCode,
-          authData.firstName,
-          authData.lastName,
-          authData.email,
-          authData.phone,
-          authData.token,
-          authData.expirationDate
-        );
-        sessionStorage.setItem("authData", JSON.stringify({
-          token: authData.token,
-          expiration: authData.expirationDate  
-        }));
+    this.message = "";
+    if (form.valid) {
+      const formValue = form.value;
+      if (formValue.password != formValue.passwordRepeat) {
+        this.message = "Paroolid ei ühti!";
+        return;
       }
-    });
+
+      const signupData: SignupData = {
+        personCode: formValue.personCode,
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        email: formValue.email,
+        phone: formValue.phone,
+        password: formValue.password
+      }
+  
+      this.authService.signup(signupData).subscribe(
+        authData => {
+          if (authData.token && authData.expirationDate) {
+            sessionStorage.setItem("authData", JSON.stringify({
+              token: authData.token,
+              expiration: authData.expirationDate  
+            }));
+          }
+          this.router.navigateByUrl("/");
+        },
+        errorRes => {
+          console.log(errorRes);
+          this.message = errorRes.error.message;
+        }
+        );
+    }
+   
   }
 
 }
