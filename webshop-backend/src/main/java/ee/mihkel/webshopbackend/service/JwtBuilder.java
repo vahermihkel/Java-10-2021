@@ -5,17 +5,19 @@ import ee.mihkel.webshopbackend.model.output.AuthData;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.log4j.Log4j2;
+import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.temporal.TemporalUnit;
 import java.util.Date;
+import java.util.HashMap;
 
 @Service
+@Log4j2
 public class JwtBuilder {
 
     @Value("${jwt.signingkey}")
@@ -26,11 +28,13 @@ public class JwtBuilder {
         Instant instant = newTime.toInstant(ZoneOffset.UTC);
         Date expiryDate = Date.from(instant);
 
+        log.info(person.getEmail());
+
         byte[] signingKey = jwtSecretKey.getBytes();
         String token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
                 .setIssuer("webshop")
-                .setSubject("Email: " + person.getEmail())
+                .setSubject(person.getEmail())
                 .setExpiration(expiryDate)
                 .compact();
         AuthData authData = new AuthData();

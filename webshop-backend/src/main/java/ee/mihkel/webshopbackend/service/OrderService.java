@@ -41,8 +41,9 @@ public class OrderService {
 
     public Long saveOrder(double totalAmount, List<Item> items, String personCode) {
         Order order = new Order();
-//        Person person = personRepository.findById(personCode).get();
-//        order.setPerson(person);
+        Person person = personRepository.findById(personCode).get();
+        order.setPerson(person);
+        log.info(personCode);
         order.setOrderItems(items);
         order.setAmount(totalAmount);
         log.info("Alustasin salvestamist");
