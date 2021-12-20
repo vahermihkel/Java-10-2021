@@ -2,8 +2,9 @@
 <br>
 
 <form (ngSubmit)="onSubmit(form)" #form="ngForm" autocomplete="nofill">
+  <label for="">Email</label> <br>
   <input ngModel name="email" type="text" required autocomplete="nofill"> <br>
-  <label for="">Telefon</label> <br>
-  <input ngModel name="password" type="password" required autocomplete="new-password"> <br>
-  <label for="">Korda parool*</label> <br>
+  <label for="">parool</label> <br>
+  <input ngModel name="password" type="password" required autocomplete="new-password"> <br>  
+  <button>Logi sisse</button>
 </form>
