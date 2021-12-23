@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
 import { ItemOutputInterface } from '../model/item-output.interface';
 import { Item } from '../model/item.model';
 
@@ -15,18 +16,43 @@ export class ItemService {
 
   private backendUrl = "http://localhost:8080/items"
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private authService: AuthService) { }
 
   getItemsFromDb() {
-    return this.http.get<Item[]>(this.backendUrl);
+    let headers = new HttpHeaders();
+    const authData = sessionStorage.getItem("authData");
+    let token = "";
+    if (authData) {
+      const parsedAuthData = JSON.parse(authData);
+      if (parsedAuthData.token && new Date(parsedAuthData.expiration) > new Date()) {
+        headers = headers.append("Authorization", "Bearer " + parsedAuthData.token);
+        token = parsedAuthData.token;
+        console.log(headers);
+      }
+    }
+    console.log(token);
+    return this.http.get<Item[]>(this.backendUrl,
+      {headers: headers});
   }
 
   addItemToDb(item: ItemOutputInterface) {
-    return this.http.post<{responseMessage: string}>(this.backendUrl, item);
+    let headers = new HttpHeaders();
+    const authData = sessionStorage.getItem("authData");
+    if (authData) {
+      const parsedAuthData = JSON.parse(authData);
+      if (parsedAuthData.token && new Date(parsedAuthData.expiration) > new Date()) {
+        headers = headers.set("Authorization", "Bearer " + parsedAuthData.token);
+      }
+    }
+    return this.http.post<{responseMessage: string}>(this.backendUrl, item,
+      { headers: headers });
   }
 
   deleteItemFromDb(itemId: number) {
-    return this.http.delete<{responseMessage: string}>(this.backendUrl + "/" + itemId);
+    let headers = this.authService.addTokenToHeader();
+    return this.http.delete<{responseMessage: string}>(this.backendUrl + "/" + itemId,
+    { headers: headers });
   }
 
   getOneFromDb(itemId: number) {
@@ -34,7 +60,9 @@ export class ItemService {
   }
 
   editItemFromDb(item: Item) {
-    return this.http.put<{responseMessage: string}>(this.backendUrl, item);
+    let headers = this.authService.addTokenToHeader();
+    return this.http.put<{responseMessage: string}>(this.backendUrl, item,
+      { headers: headers });
   }
 
   // getItems() {

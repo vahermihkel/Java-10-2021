@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,16 +23,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         jwtFilter.setSecretKey(jwtSecretKey);
 
         http
+                .headers().xssProtection().disable().and()
                 .csrf().disable()
                 .addFilter(jwtFilter)
                 .authorizeRequests()
-//                .antMatchers("/swagger-ui.html").permitAll()
-//                .antMatchers("/v3/**").permitAll()
-//                .antMatchers("/swagger-ui/**").permitAll()
-//                .antMatchers("/login").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/v3/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/signup").permitAll()
 //                .antMatchers(HttpMethod.GET,"/items").permitAll()
-//                .antMatchers("/signup").permitAll()
-                .antMatchers("**").permitAll()
+//                .antMatchers("**").permitAll()
                 .anyRequest().authenticated();
     }
 

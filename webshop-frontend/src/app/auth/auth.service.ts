@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthData } from '../model/auth.interface';
@@ -32,14 +32,25 @@ export class AuthService {
     return this.http.post<Person>(this.url + "signup", signupData);
   }
 
-  checkIfLoggedIn(): boolean {
+  addTokenToHeader() {
+    let headers = new HttpHeaders();
+    const token = this.getToken();
+    if (token) {
+      console.log("SETIN")
+      headers = headers.set("Authorization", "Bearer " + token);
+    }
+    console.log(headers);
+    return headers;
+  }
+
+  private getToken(): string | null {
     const authData = sessionStorage.getItem("authData");
     if (authData) {
       const parsedAuthData = JSON.parse(authData);
-      if (parsedAuthData.token && parsedAuthData.expiration > new Date()) {
-        return true;
+      if (parsedAuthData.token && new Date(parsedAuthData.expiration) > new Date()) {
+        return parsedAuthData.token;
       }
     }
-    return false;
+    return null;
   }
 }
