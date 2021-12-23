@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoginData } from 'src/app/model/login.interface';
 import { SignupData } from 'src/app/model/signup.interface';
 import { User } from 'src/app/model/user.model';
 import { AuthService } from '../auth.service';
@@ -38,14 +39,20 @@ export class SignupComponent implements OnInit {
       }
   
       this.authService.signup(signupData).subscribe(
-        authData => {
-          if (authData.token && authData.expirationDate) {
-            sessionStorage.setItem("authData", JSON.stringify({
-              token: authData.token,
-              expiration: authData.expirationDate  
-            }));
+        person => {
+          if (person.email && person.password) {
+            const loginData: LoginData = {
+              email: person.email,
+              password: person.password
+            }
+            this.authService.login(loginData).subscribe(authData => {
+              sessionStorage.setItem("authData", JSON.stringify({
+                token: authData.token,
+                expiration: authData.expirationDate  
+              }));
+              this.router.navigateByUrl("/");
+            })
           }
-          this.router.navigateByUrl("/");
         },
         errorRes => {
           console.log(errorRes);
