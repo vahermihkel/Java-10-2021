@@ -1,7 +1,6 @@
 package ee.mihkel.webshopbackend.controller;
 
 import ee.mihkel.webshopbackend.model.Item;
-import ee.mihkel.webshopbackend.model.Order;
 import ee.mihkel.webshopbackend.model.Person;
 import ee.mihkel.webshopbackend.model.output.EveryPayLink;
 import ee.mihkel.webshopbackend.repository.PersonRepository;

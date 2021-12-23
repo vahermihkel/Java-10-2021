@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Category } from 'src/app/model/category.model';
 import { Item } from 'src/app/model/item.model';
 import { CategoryService } from 'src/app/service/category.service';
 import { ItemService } from 'src/app/service/item.service';
@@ -13,26 +14,30 @@ export class AddItemComponent implements OnInit {
   // kas 1. HTML-s või 
   // 2. kahes või enamas funktsioonis
   // (muidu teen let muutujaks)
-  categories!: string[];
+  categories: Category[] = [];
   message = "";
 
   constructor(private itemService: ItemService,
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.categories = this.categoryService.getCategories();
+    this.categoryService.getCategoriesFromDb().subscribe((categories) => {
+      this.categories = categories;
+    });
   }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
       console.log(form);
-      let item = new Item(
-        form.value.pealkiri, 
-        form.value.hind, 
-        form.value.kategooria
-        );
+      const itemOutput = {
+        title: form.value.pealkiri, 
+        price: form.value.hind, 
+        category: {
+          id: form.value.kategooria
+        }
+      }
       // this.itemService.itemsInService.push(item);
-      this.itemService.addItemToDb(item).subscribe(
+      this.itemService.addItemToDb(itemOutput).subscribe(
         response => {
           this.message = response.responseMessage;
           this.restartForm(form);

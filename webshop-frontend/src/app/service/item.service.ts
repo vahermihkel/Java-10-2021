@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ItemOutputInterface } from '../model/item-output.interface';
 import { Item } from '../model/item.model';
 
 @Injectable({
@@ -20,7 +21,7 @@ export class ItemService {
     return this.http.get<Item[]>(this.backendUrl);
   }
 
-  addItemToDb(item: Item) {
+  addItemToDb(item: ItemOutputInterface) {
     return this.http.post<{responseMessage: string}>(this.backendUrl, item);
   }
 

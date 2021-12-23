@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Category } from 'src/app/model/category.model';
 import { CategoryService } from 'src/app/service/category.service';
 
 @Component({
@@ -8,21 +8,33 @@ import { CategoryService } from 'src/app/service/category.service';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  categories!: string[];
+  categories: Category[] = [];
+  message = '';
 
   constructor(private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-    this.categories = this.categoryService.getCategories();
+    this.categoryService.getCategoriesFromDb().subscribe((categories) => {
+      this.categories = categories;
+    });
   }
 
-  onDeleteCategory(category: string) {
-    this.categoryService.deleteCategory(category);
-  }
-
-  onSubmit(form: NgForm) {
-    if (form.valid) {
-      this.categoryService.addCategory(form.value.category);
+  onDeleteCategory(category: Category) {
+    let categoryId = category.id;
+    if (categoryId) {
+      this.categoryService.deleteCategoryFromDb(categoryId).subscribe((res) => {
+        this.message = res.responseMessage;
+        this.resetMessage();
+        this.categoryService.getCategoriesFromDb().subscribe((categories) => {
+          this.categories = categories;
+        });
+      });
     }
+  }
+
+  resetMessage() {
+    setTimeout(() => {
+      this.message = '';
+    }, 3000);
   }
 }

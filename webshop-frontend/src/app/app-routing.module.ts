@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddCategoryComponent } from './admin/add-category/add-category.component';
 import { AddItemComponent } from './admin/add-item/add-item.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { CategoryComponent } from './admin/category/category.component';
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: "admin/lisa-ese", component: AddItemComponent },
   { path: "admin/muuda-ese/:itemId", component: EditItemComponent },
   { path: "admin/esemed", component: ViewItemsComponent },
+  { path: 'admin/add-category', component: AddCategoryComponent },
   { path: "logi-sisse", component: LoginComponent },
   { path: "registreeru", component: SignupComponent },
 ];

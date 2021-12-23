@@ -1,23 +1,40 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Category } from '../model/category.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
-  private categoriesInService = ["kat1", "kat2", "kat"];
+  private backendUrl = 'http://localhost:8080/categories';
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
-  getCategories() {
-    return this.categoriesInService.slice();
+  getCategoriesFromDb() {
+    return this.http.get<Category[]>(this.backendUrl);
   }
 
-  addCategory(category: string) {
-    this.categoriesInService.push(category);
+  getOneCategoryFromDb(id: number) {
+    return this.http.get<Category>(this.backendUrl + '/' + id);
   }
 
-  deleteCategory(category: string) {
-    let index = this.categoriesInService.indexOf(category);
-    this.categoriesInService.splice(index,1);
+  addCategoryToDb(category: Category) {
+    return this.http.post<{ responseMessage: string }>(
+      this.backendUrl,
+      category
+    );
+  }
+
+  editCategoryInDb(category: Category) {
+    return this.http.put<{ responseMessage: string }>(
+      this.backendUrl,
+      category
+    );
+  }
+
+  deleteCategoryFromDb(id: number) {
+    return this.http.delete<{ responseMessage: string }>(
+      this.backendUrl + '/' + id
+    );
   }
 }

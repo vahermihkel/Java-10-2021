@@ -12,7 +12,7 @@
   <label>Kategooria</label><br>
   <!-- <input ngModel name="kategooria" type="text" required> <br> -->
   <select ngModel name="kategooria">
-    <option *ngFor="let category of categories" [value]="category">{{ category | titlecase }}</option>
+    <option *ngFor="let category of categories" [value]="category.id">{{ category.categoryName }}</option>
   </select> <br>
   <button [disabled]="addItemForm.invalid" type="submit">Lisa ese</button>
 </form>
