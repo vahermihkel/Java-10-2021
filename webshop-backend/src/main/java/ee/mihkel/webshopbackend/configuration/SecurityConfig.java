@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         jwtFilter.setSecretKey(jwtSecretKey);
 
         http
-                .headers().xssProtection().disable().and()
+                .cors().and().headers().xssProtection().disable().and()
                 .csrf().disable()
                 .addFilter(jwtFilter)
                 .authorizeRequests()
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
-//                .antMatchers(HttpMethod.GET,"/items").permitAll()
+                .antMatchers(HttpMethod.GET,"/items").permitAll()
 //                .antMatchers("**").permitAll()
                 .anyRequest().authenticated();
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { User } from 'src/app/model/user.model';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -11,7 +11,8 @@ import { AuthService } from '../auth.service';
 export class LoginComponent implements OnInit {
   message = "";
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -19,19 +20,12 @@ export class LoginComponent implements OnInit {
   onSubmit(form: NgForm) {
     this.authService.login(form.value).subscribe(authData => {
       if (authData.token && authData.expirationDate) {
-        // new User(
-        //   authData.personCode,
-        //   authData.firstName,
-        //   authData.lastName,
-        //   authData.email,
-        //   authData.phone,
-        //   authData.token,
-        //   authData.expirationDate
-        // );
         sessionStorage.setItem("authData", JSON.stringify({
           token: authData.token,
           expiration: authData.expirationDate  
         }));
+        this.authService.isLoggedInObs.next(true);
+        this.router.navigateByUrl("/admin");
       }
     });
   }

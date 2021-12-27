@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AuthData } from '../model/auth.interface';
 import { LoginData } from '../model/login.interface';
 import { Person } from '../model/person.model';
@@ -13,6 +13,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
   private url = "http://localhost:8080/";
+  isLoggedInObs = new BehaviorSubject(false);
 
   constructor(private http: HttpClient) { }
 
