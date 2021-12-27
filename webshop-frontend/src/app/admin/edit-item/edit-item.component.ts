@@ -30,7 +30,7 @@ export class EditItemComponent implements OnInit {
           this.editItemForm = new FormGroup({
             title: new FormControl(item.title),
             price: new FormControl(item.price),
-            category: new FormControl(item.category),
+            category: new FormControl(item.category.categoryName),
           });
         }
       });  

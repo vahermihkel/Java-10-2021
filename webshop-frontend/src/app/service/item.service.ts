@@ -20,31 +20,13 @@ export class ItemService {
     private authService: AuthService) { }
 
   getItemsFromDb() {
-    let headers = new HttpHeaders();
-    const authData = sessionStorage.getItem("authData");
-    let token = "";
-    if (authData) {
-      const parsedAuthData = JSON.parse(authData);
-      if (parsedAuthData.token && new Date(parsedAuthData.expiration) > new Date()) {
-        headers = headers.append("Authorization", "Bearer " + parsedAuthData.token);
-        token = parsedAuthData.token;
-        console.log(headers);
-      }
-    }
-    console.log(token);
+    let headers = this.authService.addTokenToHeader();
     return this.http.get<Item[]>(this.backendUrl,
       {headers: headers});
   }
 
   addItemToDb(item: ItemOutputInterface) {
-    let headers = new HttpHeaders();
-    const authData = sessionStorage.getItem("authData");
-    if (authData) {
-      const parsedAuthData = JSON.parse(authData);
-      if (parsedAuthData.token && new Date(parsedAuthData.expiration) > new Date()) {
-        headers = headers.set("Authorization", "Bearer " + parsedAuthData.token);
-      }
-    }
+    let headers = this.authService.addTokenToHeader();
     return this.http.post<{responseMessage: string}>(this.backendUrl, item,
       { headers: headers });
   }

@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,5 +79,15 @@ public class AuthenticationController {
             throw new RegistrationException();
         }
 
+    }
+
+    @PostMapping("logout")
+    public void logout() {
+        SecurityContextHolder.clearContext();
+    }
+
+    @GetMapping("validate-token")
+    public ResponseEntity<Boolean> validateToken() {
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 }

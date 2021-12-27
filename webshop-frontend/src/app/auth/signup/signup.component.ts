@@ -50,6 +50,7 @@ export class SignupComponent implements OnInit {
                 token: authData.token,
                 expiration: authData.expirationDate  
               }));
+              this.authService.isLoggedInObs.next(true);
               this.router.navigateByUrl("/");
             })
           }

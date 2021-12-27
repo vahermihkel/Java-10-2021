@@ -21,6 +21,11 @@ export class NavbarComponent implements OnInit {
     this.authService.isLoggedInObs.subscribe(loggedIn=>{
         this.isLoggedIn = loggedIn;
     })
+    if (sessionStorage.getItem("authData")) {
+      this.authService.validateToken().subscribe(res => {
+        this.isLoggedIn = res;
+      });
+    }
     console.log("navbari ngOnInit läks käima");
     this.cartService.getCartItemsChangedSubject().subscribe(sum=>{
       this.sumOfCart = sum;

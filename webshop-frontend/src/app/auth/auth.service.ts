@@ -54,4 +54,10 @@ export class AuthService {
     }
     return null;
   }
+
+  validateToken() {
+    let headers = this.addTokenToHeader();
+    return this.http.get<boolean>(this.url + "validate-token", 
+    {headers: headers});
+  }
 }

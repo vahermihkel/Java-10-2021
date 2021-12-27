@@ -13,18 +13,7 @@ export class CategoryService {
     private authService: AuthService) {}
 
   getCategoriesFromDb() {
-    let headers = new HttpHeaders();
-    const authData = sessionStorage.getItem("authData");
-    let token = "";
-    if (authData) {
-      const parsedAuthData = JSON.parse(authData);
-      if (parsedAuthData.token && new Date(parsedAuthData.expiration) > new Date()) {
-        headers = headers.append("Authorization", "Bearer " + parsedAuthData.token);
-        token = parsedAuthData.token;
-        console.log(headers);
-      }
-    }
-    console.log(token);
+    let headers = this.authService.addTokenToHeader();
     return this.http.get<Category[]>(this.backendUrl,
       {headers: headers});
   }
