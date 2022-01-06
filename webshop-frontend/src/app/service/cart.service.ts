@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 import { Item } from '../model/item.model';
 
 @Injectable({
@@ -10,9 +11,10 @@ export class CartService {
   private cartItemsInService: Item[] = [];
   private cartItemsChanged = new Subject<number>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private authService: AuthService) { }
 
-  url = "http://localhost:4200";
+  url = "http://localhost:8080/";
   // api_username = "92ddcfab96e34a5f";
   // account_name = "EUR3D1";
   // order_reference = Math.floor(Math.random()*99999);
@@ -21,8 +23,11 @@ export class CartService {
   // customer_url = "https://www.example.com";
 
 
-  startPayment(sumOfCart: number) {
-    return this.http.post<any>(this.url, sumOfCart);
+  startPayment(items: Item[]) {
+    let headers = this.authService.addTokenToHeader();
+    return this.http.post<any>(this.url + "payment", 
+    items,
+    {headers: headers});
   }
   // startPayment(sumOfCart: number) {
   //   // let headers = new HttpHeaders();

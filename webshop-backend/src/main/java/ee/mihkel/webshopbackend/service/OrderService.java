@@ -51,4 +51,8 @@ public class OrderService {
         log.info(submittedOrder);
         return submittedOrder.getId();
     }
+
+    public List<Order> getPersonOrders(Person person) {
+        return orderRepository.getOrdersByPersonEquals(person);
+    }
 }

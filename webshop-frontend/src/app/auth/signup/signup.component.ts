@@ -51,7 +51,7 @@ export class SignupComponent implements OnInit {
                 expiration: authData.expirationDate  
               }));
               this.authService.isLoggedInObs.next(true);
-              this.router.navigateByUrl("/");
+              this.router.navigateByUrl("/admin");
             })
           }
         },

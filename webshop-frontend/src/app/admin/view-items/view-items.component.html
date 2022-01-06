@@ -3,7 +3,7 @@
 <div *ngFor="let item of items">
   <div>{{ item.title }}</div>
   <div>{{ item.price }} €</div>
-  <div>{{ item.category }}</div>
+  <div>{{ item.category.categoryName }}</div>
   <div>Pilt</div>
                 <!-- funktsioon peab olema .ts failis olemas -->
   <button (click)="onDeleteItem(item)">Kustuta</button>

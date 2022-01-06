@@ -1,6 +1,7 @@
 package ee.mihkel.webshopbackend.controller;
 
 import ee.mihkel.webshopbackend.model.Item;
+import ee.mihkel.webshopbackend.model.Order;
 import ee.mihkel.webshopbackend.model.Person;
 import ee.mihkel.webshopbackend.model.output.EveryPayLink;
 import ee.mihkel.webshopbackend.repository.PersonRepository;
@@ -33,13 +34,17 @@ public class OrderController {
     // 2. Kui läks midagi makse ajal valesti, klient ütleb et on maksnud
     //          siis on jälg olemas mis kell andmebaasi pandi
 
-    @PostMapping("payment")
+        @PostMapping("payment")
     public EveryPayLink startPayment(@RequestBody List<Item> items) {
         // andmebaasi enne maksmist tellimuse koos toodetega maksmata staatuses
         log.info("STARTING PAYMENT");
         String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        log.info(SecurityContextHolder.getContext().getAuthentication());
+            log.info(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        log.info(email);
         Person person = personRepository.findByEmail(email);
         EveryPayLink everyPayLink = new EveryPayLink();
+        log.info(person);
         if (person != null) {
             String personCode = person.getPersonCode();
             List<Item> databaseItems = orderService.getDatabaseItems(items);
@@ -57,14 +62,12 @@ public class OrderController {
         // otsin selle tellimuse ja ütlen et on makstud
     }
 
-//    @GetMapping("orders")
-//    public List<Order> getOrders() {
-//        String email = SecurityContextHolder.getContext()
-//                .getAuthentication().getPrincipal().toString();
-//        Person person = personRepository.findByEmail(email);
-//
-    // OrderRepositorysse mis tagastab kõik Orderid Person alusekl
-    // Cache -- Kõik Personi Orderid
-//    }
+    @GetMapping("orders")
+    public List<Order> getOrders() {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal().toString();
+        Person person = personRepository.findByEmail(email);
+        return orderService.getPersonOrders(person);
+    }
 
 }
